@@ -1,0 +1,11 @@
+{
+  "name": "users",
+  "description": "a users api",
+  "version": "1.0.0",
+  "author": "Fan, Yi-Jie (fancn21th.cn)",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "3.2.10"
+  }
+}

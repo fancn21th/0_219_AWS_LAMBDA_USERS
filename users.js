@@ -1,20 +1,51 @@
-const _post = async (name, payload) => {
-  data[name] = payload;
-  await db.write();
-  return data[name];
+import fetch from "node-fetch";
+import { v4 as uuidv4 } from "uuid";
+import { stringify, parse } from "./utils.js";
+
+const request_url = `${process.env.DB_URL}/db/users`;
+
+const noBodyMethods = ["get", "delete"];
+
+const _request = async ({ method = "get", body = {}, url = request_url }) => {
+  const _options = noBodyMethods.includes(method)
+    ? {
+        headers: { "Content-Type": "application/json" },
+        method,
+      }
+    : {
+        headers: { "Content-Type": "application/json" },
+        method,
+        body: stringify(body),
+      };
+
+  console.log({
+    url,
+    _options,
+  });
+
+  const response = await fetch(url, _options);
+
+  return await response.json();
 };
 
-const _delete = async (name) => {
-  delete data[name];
-  await db.write();
+const _post = async (payload) => {
+  const id = uuidv4();
+  return _request({
+    url: `${request_url}/${id}`,
+    method: "post",
+    body: {
+      id,
+      ...payload,
+    },
+  });
 };
 
-const _put = (name, payload) => {
-  return _post(name, payload);
-};
+const _delete = async () => {};
 
-const _get = (name) => {
-  return data[name];
+const _put = (payload) => {};
+
+const _get = async () => {
+  return _request();
 };
 
 export { _delete, _get, _post, _put };

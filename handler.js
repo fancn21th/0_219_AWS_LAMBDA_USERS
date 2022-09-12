@@ -1,15 +1,20 @@
-import fetch from "node-fetch";
+import { _delete, _get, _post, _put } from "./users.js";
 import { stringify, parse } from "./utils.js";
 
-const request_url = `${process.env.DB_URL}/db/users`;
+const handlerMap = {
+  "GET /users": _get,
+  "POST /users": _post,
+};
 
 export const users = async (event) => {
-  const response = await fetch(request_url, {
-    headers: { "Content-Type": "application/json" },
-    method: "get",
+  const _method = event.routeKey;
+  const _body = parse(event.body); // body
+
+  console.log({
+    event,
   });
 
-  const { result } = await response.json();
+  const { result } = await handlerMap[_method](_body);
 
   return {
     statusCode: 200,

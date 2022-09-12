@@ -10,11 +10,15 @@ export const users = async (event) => {
   const _method = event.routeKey;
   const _body = parse(event.body); // body
 
-  console.log({
-    event,
-  });
+  // console.log({
+  //   event,
+  // });
 
-  const { result } = await handlerMap[_method](_body);
+  const result = await handlerMap[_method](_body);
+
+  console.log({
+    result,
+  });
 
   return {
     statusCode: 200,

@@ -6,7 +6,11 @@ const request_url = `${process.env.DB_URL}/db/users`;
 
 const noBodyMethods = ["get", "delete"];
 
-const _request = async ({ method = "get", body = {}, url = request_url }) => {
+const _request = async ({
+  method = "get",
+  body = {},
+  url = request_url,
+} = {}) => {
   const _options = noBodyMethods.includes(method)
     ? {
         headers: { "Content-Type": "application/json" },

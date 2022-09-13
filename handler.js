@@ -4,20 +4,25 @@ import { stringify, parse } from "./utils.js";
 const handlerMap = {
   "GET /users": _get,
   "POST /users": _post,
+  "DELETE /users/{id}": _delete,
 };
 
 export const users = async (event) => {
   const _method = event.routeKey;
   const _body = parse(event.body); // body
+  const { id } = event.pathParameters || { id: undefined };
 
-  // console.log({
-  //   event,
-  // });
-
-  const result = await handlerMap[_method](_body);
+  const handler = handlerMap[_method];
 
   console.log({
-    result,
+    _method,
+    _body,
+    id,
+  });
+
+  const result = await handler({
+    id,
+    body: _body,
   });
 
   return {

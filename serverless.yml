@@ -2,6 +2,10 @@ service: users-api
 
 frameworkVersion: "3"
 
+custom:
+  url: undefined
+  force: undefined
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -10,3 +14,6 @@ provider:
 functions:
   users:
     handler: handler.users
+    environment:
+      DB_URL: ${self:custom.url}
+      FORCE_DELETE_FIELD: ${self:custom.force}

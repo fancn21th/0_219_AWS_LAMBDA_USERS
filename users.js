@@ -6,6 +6,8 @@ const request_url = `${process.env.DB_URL}/db/users`;
 
 const noBodyMethods = ["get", "delete"];
 
+const forceDeleteField = process.env.FORCE_DELETE_FIELD;
+
 const _request = async ({
   method = "get",
   body = {},
@@ -32,7 +34,7 @@ const _request = async ({
   return await response.json();
 };
 
-const _post = async (payload) => {
+const _post = async ({ body: payload }) => {
   const id = uuidv4();
   return _request({
     url: `${request_url}/${id}`,
@@ -44,7 +46,12 @@ const _post = async (payload) => {
   });
 };
 
-const _delete = async () => {};
+const _delete = async ({ id }) => {
+  return _request({
+    url: `${request_url}/${id}?${forceDeleteField}=true`,
+    method: "delete",
+  });
+};
 
 const _put = (payload) => {};
 

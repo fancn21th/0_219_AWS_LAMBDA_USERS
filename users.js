@@ -47,6 +47,9 @@ const _post = async ({ body: payload }) => {
 };
 
 const _delete = async ({ id }) => {
+  if (!forceDeleteField)
+    throw new Error("service env has no FORCE_DELETE_FIELD provided");
+
   return _request({
     url: `${request_url}/${id}?${forceDeleteField}=true`,
     method: "delete",
